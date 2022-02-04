@@ -23,8 +23,9 @@ Preprocessed example .CSV datasets are provided in the data folder, however the 
 
 ## Train/Test
 
-For optimal performance, we do a 90/10 train/test split on the available observational datasets. However, DeepPrecip was also tested in a leave-one-site-out cross validation and shown to provide good skill at predicting precipitation on completely unseen sites. If you have access to an MRR and would like to test your own data with DeepPrecip, please feel free or reach out to me for assistance.
+For optimal performance, we do a 90/10 train/test split on the available observational datasets. However, DeepPrecip was also tested in a leave-one-site-out cross validation and shown to provide good skill at predicting precipitation on completely unseen sites. If you have access to an MRR and would like to test your own data with DeepPrecip, please feel free or reach out to me for assistance. The training study sites and periods are shown below.
 
+![sites](https://github.com/frasertheking/DeepPrecip/blob/main/images/sites.png)
 
 ## Model Performance
 

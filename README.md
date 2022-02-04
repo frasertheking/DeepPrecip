@@ -1,7 +1,7 @@
 
 # DeepPrecip
 
-![alt text](https://github.com/frasertheking/deepprecip/images/structure.png)
+![alt text](https://github.com/frasertheking/DeepPrecip/blob/main/images/structure.png)
 
 DeepPrecip is a deep convolutional multilayer perceptron that takes active radar measurements of the lower atmosphere as input from K-band radar and returns a surface accumulation estimate. DeepPrecip was trained on 8 years of data from nine observation sites across the northern hemisphere. As a general precipitation model, it can estimate both surface rain and snow.
 
@@ -28,8 +28,8 @@ For optimal performance, we do a 90/10 train/test split on the available observa
 
 ## Model Performance
 
-![res1](https://github.com/frasertheking/deepprecip/images/res1.png)
-![res2](https://github.com/frasertheking/deepprecip/images/res2.png)
+![res1](https://github.com/frasertheking/DeepPrecip/blob/main/images/res1.png)
+![res2](https://github.com/frasertheking/DeepPrecip/blob/main/images/res2.png)
 
 
 ## Support

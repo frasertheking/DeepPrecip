@@ -7,7 +7,7 @@ DeepPrecip is a deep convolutional multilayer perceptron that takes active radar
 
 ## Installation
 
-If you wish to train and run your own version of DeepPrecip, you can follow the steps below. Note that Python >= 3.7 and Anaconda is required.
+If you wish to train and run your own version of DeepPrecip, you can follow the steps below. Note that Python >= 3.7 and Anaconda is required. Additionally, Tensorflow and Keras are needed for model training.
 
 ```bash
   git clone https://github.com/frasertheking/DeepPrecip.git

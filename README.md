@@ -1,3 +1,4 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5976046.svg)](https://doi.org/10.5281/zenodo.5976046)
 
 # DeepPrecip
 
@@ -19,7 +20,7 @@ If you wish to train and run your own version of DeepPrecip, you can follow the 
 ## Data
 
 Preprocessed example .CSV datasets are provided in the data folder, however the raw MRR, Pluvio and meteorologic files are also available via the Zenodo link: 
-
+https://doi.org/10.5281/zenodo.5976046
 
 ## Train/Test
 

@@ -32,6 +32,8 @@ For optimal performance, we do a 90/10 train/test split on the available observa
 
 ## Model Performance
 
+Attached are precipitation accumulation comparisons between DeepPrecip and a collection of commonly used Z-S and Z-R relationships. For more information on how these were performed, please see our article.
+
 ![res1](https://github.com/frasertheking/DeepPrecip/blob/main/images/res1.jpg)
 ![res2](https://github.com/frasertheking/DeepPrecip/blob/main/images/res2.jpg)
 

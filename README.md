@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5976046.svg)](https://doi.org/10.5281/zenodo.5976046)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dwyl/auth_plug/Elixir%20CI?label=build&style=flat-square) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5976046.svg)](https://doi.org/10.5281/zenodo.5976046) 
 
 ![alt text](https://github.com/frasertheking/DeepPrecip/blob/main/images/logo.png)
 

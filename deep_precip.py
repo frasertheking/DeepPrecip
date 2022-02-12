@@ -1,3 +1,17 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""DeepPrecip Module
+   Fraser King 2022
+   
+   This is the main executable for DeepPrecip. You can adjust model hyperparams in the global variable definition section.
+   For more information on how to run the model, please view our GitHub page: https://github.com/frasertheking/DeepPrecip
+"""
+
+
+####################################################################################################################################
+############ Imports
+
 import sys,os,io
 import time
 import pandas as pd
@@ -10,13 +24,16 @@ from sklearn import metrics
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
+
+####################################################################################################################################
+############ Global Variables
+
 DATA_PATH = "data/"
 MIN_AVG = 20
 USE_SHUFFLE = False
 RANDOM_STATE = None
-NUM_KF_SPLITS = 5
 BATCH_SIZE = 128
-EPOCHS = 3000
+MAX_EPOCHS = 3000
 PRED_COUNT = 256
 RUN_TIME = str(int(time.time()))
 os.mkdir('runs/' + RUN_TIME)
@@ -38,79 +55,79 @@ class model_metrics(object):
         self.y_test = y_test
         self.y_pred = y_pred
         
-    def mse(self):
-        return metrics.mean_squared_error(self.y_test, self.y_pred)
+def mse(self):
+    return metrics.mean_squared_error(self.y_test, self.y_pred)
+
+def corr(self):
+    return np.corrcoef(self.y_test, self.y_pred)[0][1]
+
+def mae(self):
+    return metrics.mean_absolute_error(self.y_test, self.y_pred)
+
+def r2(self):
+    return metrics.r2_score(self.y_test, self.y_pred)
+
+def export_metrics():
+    return self.mse(), self.corr(), self.mae(), self.r2()
+
+def data_length(self):
+    return len(self.y_pred)
     
-    def corr(self):
-        return np.corrcoef(self.y_test, self.y_pred)[0][1]
+def max_val(self):
+    max_val = max(self.y_pred)
+    if (max(self.y_test)) > max_val:
+        max_val = max(self.y_test)
+    return max_val
+
+def summary(self):
+    print("\n####################\n")
+    print(self.name + " STATS (n=" + str(self.data_length()) + "):" + "\nMSE: " + str(round(self.mse(),5)) + \
+          "\nCorrelation: " + str(round(self.corr(),5)) +\
+          "\nMean Absolute Error: " + str(round(self.mae(),5)) +\
+          "\nR-Squared: " + str(round(self.r2(),5)))
+    print("\n####################\n")
     
-    def mae(self):
-        return metrics.mean_absolute_error(self.y_test, self.y_pred)
+def scatter(self):
+    stats = self.name + " STATS (n=" + str(self.data_length()) + "):" + "\nMSE: " + str(round(self.mse(),5)) + \
+          "\nCorrelation: " + str(round(self.corr(),5)) +\
+          "\nMean Absolute Error: " + str(round(self.mae(),5)) +\
+          "\nR-Squared: " + str(round(self.r2(),5))
+    fig, ax=plt.subplots(figsize=(10,10))
+    plt.grid(linestyle='--')
+    plt.title(self.name + ' Actual vs Predicted Values')
+    plt.xlabel('Predicted Accumulation (mm SWE)')
+    plt.ylabel('Observed Accumulation (mm SWE)')
+    plt.xlim((0, self.max_val()))
+    plt.ylim((0, self.max_val()))
+    plt.scatter(self.y_pred, self.y_test,color='red', alpha=0.25)
+    plt.plot([0, self.max_val()], [0, self.max_val()], linestyle='--', color='black')
+    plt.text(0.02, 0.9, stats, horizontalalignment='left', verticalalignment='center', transform=ax.transAxes, fontsize=16)
+    plt.savefig('runs/' + RUN_TIME + '/scatter_full_column.png', DPI=300)
     
-    def r2(self):
-        return metrics.r2_score(self.y_test, self.y_pred)
+def timeseries(self):
+    roll_y_test = pd.Series(self.y_test).rolling(250).mean().tolist()
+    roll_y_pred = pd.Series(self.y_pred).rolling(250).mean().tolist()
+    fig, ax=plt.subplots(figsize=(20,7))
+    plt.grid(linestyle='--')
+    plt.title(self.name + ' Timeseries')
+    plt.xlabel('Time')
+    plt.ylabel('Accumulation (mm SWE)')
+    plt.plot(np.arange(len(roll_y_test)), roll_y_test, color='black', label='observed')
+    plt.plot(np.arange(len(roll_y_pred)), roll_y_pred, color='red', label='predicted')
+    plt.axhline(np.nanmean(self.y_test), color='black', linestyle='--')
+    plt.axhline(np.nanmean(self.y_pred), color='red', linestyle='--')
+    plt.legend()
+    plt.savefig('runs/' + RUN_TIME + '/timeseries_full_column.png', DPI=300)
     
-    def export_metrics():
-        return self.mse(), self.corr(), self.mae(), self.r2()
-    
-    def data_length(self):
-        return len(self.y_pred)
-        
-    def max_val(self):
-        max_val = max(self.y_pred)
-        if (max(self.y_test)) > max_val:
-            max_val = max(self.y_test)
-        return max_val
-    
-    def summary(self):
-        print("\n####################\n")
-        print(self.name + " STATS (n=" + str(self.data_length()) + "):" + "\nMSE: " + str(round(self.mse(),5)) + \
-              "\nCorrelation: " + str(round(self.corr(),5)) +\
-              "\nMean Absolute Error: " + str(round(self.mae(),5)) +\
-              "\nR-Squared: " + str(round(self.r2(),5)))
-        print("\n####################\n")
-        
-    def scatter(self):
-        stats = self.name + " STATS (n=" + str(self.data_length()) + "):" + "\nMSE: " + str(round(self.mse(),5)) + \
-              "\nCorrelation: " + str(round(self.corr(),5)) +\
-              "\nMean Absolute Error: " + str(round(self.mae(),5)) +\
-              "\nR-Squared: " + str(round(self.r2(),5))
-        fig, ax=plt.subplots(figsize=(10,10))
-        plt.grid(linestyle='--')
-        plt.title(self.name + ' Actual vs Predicted Values')
-        plt.xlabel('Predicted Accumulation (mm SWE)')
-        plt.ylabel('Observed Accumulation (mm SWE)')
-        plt.xlim((0, self.max_val()))
-        plt.ylim((0, self.max_val()))
-        plt.scatter(self.y_pred, self.y_test,color='red', alpha=0.25)
-        plt.plot([0, self.max_val()], [0, self.max_val()], linestyle='--', color='black')
-        plt.text(0.02, 0.9, stats, horizontalalignment='left', verticalalignment='center', transform=ax.transAxes, fontsize=16)
-        plt.savefig('runs/' + RUN_TIME + '/scatter_full_column.png', DPI=300)
-        
-    def timeseries(self):
-        roll_y_test = pd.Series(self.y_test).rolling(250).mean().tolist()
-        roll_y_pred = pd.Series(self.y_pred).rolling(250).mean().tolist()
-        fig, ax=plt.subplots(figsize=(20,7))
-        plt.grid(linestyle='--')
-        plt.title(self.name + ' Timeseries')
-        plt.xlabel('Time')
-        plt.ylabel('Accumulation (mm SWE)')
-        plt.plot(np.arange(len(roll_y_test)), roll_y_test, color='black', label='observed')
-        plt.plot(np.arange(len(roll_y_pred)), roll_y_pred, color='red', label='predicted')
-        plt.axhline(np.nanmean(self.y_test), color='black', linestyle='--')
-        plt.axhline(np.nanmean(self.y_pred), color='red', linestyle='--')
-        plt.legend()
-        plt.savefig('runs/' + RUN_TIME + '/timeseries_full_column.png', DPI=300)
-        
-    def freq(self):
-        plt.figure(figsize=(15, 18))
-        sb.distplot(self.y_pred, hist = False, color = 'r', label = 'Predicted Values')
-        sb.distplot(self.y_test, hist = False, color = 'b', label = 'Actual Values')
-        plt.title(self.name + ' Accumulation Distribution')
-        plt.xlabel('Values')
-        plt.ylabel('Frequency')
-        plt.legend(loc = 'upper right')
-        plt.savefig('runs/' + RUN_TIME + '/freq_full_column.png', DPI=300)
+def freq(self):
+    plt.figure(figsize=(15, 18))
+    sb.distplot(self.y_pred, hist = False, color = 'r', label = 'Predicted Values')
+    sb.distplot(self.y_test, hist = False, color = 'b', label = 'Actual Values')
+    plt.title(self.name + ' Accumulation Distribution')
+    plt.xlabel('Values')
+    plt.ylabel('Frequency')
+    plt.legend(loc = 'upper right')
+    plt.savefig('runs/' + RUN_TIME + '/freq_full_column.png', DPI=300)
 
 def make_divisible(number, divisor):
     return number - number % divisor
@@ -147,7 +164,7 @@ def plot_accuracies(histories):
 
 
 ####################################################################################################################################
-############ Import Data From CSV
+############ Import Site Data
 
 site_df_array = []
 site_name_array = []
@@ -171,11 +188,17 @@ for filename in sorted(os.listdir(DATA_PATH)):
         df = df[df['wind_speed'] < 5]
         df = df[df['mean_bins'].notnull()]
         df = df.loc[df['mean_bins'].shift(-1) != df['mean_bins']]
-        df = df.loc[df['2mt'].shift(-20) != df['2mt']]
-        df = df.rolling(window=MIN_AVG, on='timestamp').mean()
+        df = df.loc[df['2mt'].shift(-MIN_AVG) != df['2mt']]
+        roll_val = MIN_AVG
+        if 'MQT' in filename:
+            roll_val = roll_val*6
+        elif 'CYOD' in filename:
+            roll_val = 5
+        elif 'ICEPOP':
+            roll_val = roll_val*10
+        df = df.rolling(roll_val, on='timestamp').mean()
         df = df.dropna()
         site_df_array.append(df)
-        print(df.shape[0])
         X_var = df.drop(columns=['mean_bins', 'in_situ_precip'], axis=1)
         y_var = df['in_situ_precip']
         X_train_loc, X_test_loc, y_train_loc, y_test_loc = train_test_split(X_var, y_var, test_size=0.1, shuffle=USE_SHUFFLE, random_state=RANDOM_STATE)
@@ -194,7 +217,8 @@ for filename in sorted(os.listdir(DATA_PATH)):
         train_len_arr.append(len(X_train))
         test_len_arr.append(len(X_test))
         site_name_array.append(os.path.splitext(filename)[0])
-        
+
+# Temporary save
 X_train.to_csv('model_out/X_train_full_column.csv')
 X_test.to_csv('model_out/X_test_full_column.csv')
 y_train.to_csv('model_out/y_train_full_column.csv')
@@ -202,6 +226,7 @@ y_test.to_csv('model_out/y_test_full_column.csv')
 
 X_train.drop(columns=['timestamp', 'lon', 'lat', 'wind_speed', '2mt', 'bin_1', 'bin_2', 'dopp_1', 'dopp_2', 'spec_1', 'spec_2'], inplace=True, axis=1)
 X_test.drop(columns=['timestamp', 'lon', 'lat', 'wind_speed', '2mt', 'bin_1', 'bin_2', 'dopp_1', 'dopp_2', 'spec_1', 'spec_2'], inplace=True, axis=1)
+
 
 ####################################################################################################################################
 ############ Train Testing
@@ -225,6 +250,9 @@ test_data_len = make_divisible(test_data_len, BATCH_SIZE)
 X_test, y_test = X_test[:test_data_len], y_test[:test_data_len]
 
 
+####################################################################################################################################
+############ Model Structure
+
 callback = keras.callbacks.EarlyStopping(monitor='mean_squared_error', patience=8)
 model = keras.Sequential([
     keras.layers.Conv1D(filters=256, kernel_size=16, activation='relu', input_shape=(X_train.shape[1], 1)),
@@ -239,18 +267,23 @@ model = keras.Sequential([
 
 opt = keras.optimizers.Adam(learning_rate=0.0000001)
 model.compile(optimizer=opt, loss=keras.losses.MeanSquaredError(), metrics=['mean_squared_error'])
-history = model.fit(x=X_train, y=y_train, verbose=1, validation_data=(X_test, y_test), batch_size=BATCH_SIZE, epochs=EPOCHS, callbacks=[callback])
+history = model.fit(x=X_train, y=y_train, verbose=1, validation_data=(X_test, y_test), batch_size=BATCH_SIZE, epochs=MAX_EPOCHS, callbacks=[callback])
 y_pred = model.predict(X_test, batch_size=BATCH_SIZE)
 model.save('models')
 
+# Prediction save
 df = pd.DataFrame({'y_test': y_test, 'y_pred': y_pred.flatten()})
 df.to_csv('model_out/mlp_full_column.csv', index=False)
+
+
+####################################################################################################################################
+############ Output
 
 stats_mlp = model_metrics('mlp', np.arange(len(y_test)), y_test, y_pred.flatten())
 stats_mlp.summary()
 stats_mlp.timeseries()
 stats_mlp.scatter()
 stats_mlp.freq()
-# plot_accuracies(history)
 
+print("\n DeepPrecip model run complete")
 

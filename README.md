@@ -38,6 +38,7 @@ Attached are precipitation accumulation comparisons between DeepPrecip and a col
 
 ![res1](https://github.com/frasertheking/DeepPrecip/blob/main/images/res1.png)
 ![res2](https://github.com/frasertheking/DeepPrecip/blob/main/images/res2.png)
+![res2](https://github.com/frasertheking/DeepPrecip/blob/main/images/results.png)
 
 
 ## Support

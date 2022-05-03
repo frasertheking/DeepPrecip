@@ -16,8 +16,8 @@ If you wish to train and run your own version of DeepPrecip, you can follow the 
 
 ```bash
   git clone https://github.com/frasertheking/DeepPrecip.git
-  conda create -n deep-precip --file req.txt
-  conda activate deep-precip
+  conda env create -f deep_precip.yml
+  conda activate deep_precip
   python deep_precip.py
 ```
 

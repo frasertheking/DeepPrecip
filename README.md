@@ -28,6 +28,8 @@ https://doi.org/10.5281/zenodo.5976046
 
 For testing the model code here, pre-processed example input data can be downloaded at the following link: https://frasertheking.com/downloads/deep_precip_example_data.zip
 
+You'll want to make and place this in a /data folder (or change the path in the code). You may also want to tweak the /model_out path (or create this folder) as well for testing.
+
 ## Train/Test
 
 For optimal performance, we do a 90/10 train/test split on the available observational datasets. However, DeepPrecip was also tested in a leave-one-site-out cross validation and shown to provide good skill at predicting precipitation on completely unseen sites. If you have access to an MRR and would like to test your own data with DeepPrecip, please feel free or reach out to me for assistance. The training study sites and periods are shown below.

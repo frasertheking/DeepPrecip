@@ -28,7 +28,7 @@ https://doi.org/10.5281/zenodo.5976046
 
 For testing the model code here, pre-processed example input data can be downloaded at the following link: https://frasertheking.com/downloads/deep_precip_example_data.zip
 
-You'll want to make and place this in a /data folder (or change the path in the code). You may also want to tweak the /model_out path (or create this folder) as well for testing.
+You'll want to place this in the data folder (or change the path in the code).
 
 ## Train/Test
 

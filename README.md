@@ -36,6 +36,35 @@ For optimal performance, we do a 90/10 train/test split on the available observa
 
 ![sites](https://github.com/frasertheking/DeepPrecip/blob/main/images/sites.png)
 
+## Run on IPU
+
+To run DeepPrecip on IPUs, create a new IPU environment by enabling the Poplar SDK & installing the Poplar Tensorflow wheel as described in the IPU [Getting Started Guide](https://docs.graphcore.ai/en/latest/getting-started.html#getting-started), then install the relevant requirements. 
+
+```bash
+virtualenv /path/to/new/virtual/environment
+source /path/to/new/virtual/environment/bin/activate
+source [path_to_SDK]+/poplar-ubuntu_18_04-[poplar_ver]+[build]/enable.sh
+pip install tensorflow-[ver]+[platform].whl
+pip install -r requirements.txt
+```
+
+Next follow similar instructions as above to clone the repository and download the data:
+
+```
+git clone https://github.com/frasertheking/DeepPrecip.git
+cd DeepPrecip
+mkdir ./runs
+mkdir ./checkpoints
+wget https://frasertheking.com/downloads/deep_precip_example_data.zip
+unzip deep_precip_example_data.zip
+```
+
+ Then to run on IPUs, run the following command:
+
+```bash
+python deep_precip_ipu.py
+```
+
 ## Model Performance
 
 Attached are precipitation accumulation comparisons between DeepPrecip and a collection of commonly used Z-S and Z-R relationships. For more information on how these were performed, please see our article.
@@ -44,6 +73,10 @@ Attached are precipitation accumulation comparisons between DeepPrecip and a col
 ![res2](https://github.com/frasertheking/DeepPrecip/blob/main/images/res2.png)
 ![res2](https://github.com/frasertheking/DeepPrecip/blob/main/images/results.png)
 
+## Throughput
+DeepPrecip model training throughput was also examined on a variety of different hardware setups (shown below).
+
+![thru1](https://github.com/frasertheking/DeepPrecip/blob/main/images/throughput.png)
 
 ## Support
 

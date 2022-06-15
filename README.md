@@ -45,7 +45,7 @@ virtualenv /path/to/new/virtual/environment
 source /path/to/new/virtual/environment/bin/activate
 source [path_to_SDK]+/poplar-ubuntu_18_04-[poplar_ver]+[build]/enable.sh
 pip install tensorflow-[ver]+[platform].whl
-pip install -r requirements.txt
+pip install -r ipu_requirements.txt
 ```
 
 Next follow similar instructions as above to clone the repository and download the data:

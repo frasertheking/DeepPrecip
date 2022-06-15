@@ -75,7 +75,7 @@ Attached are precipitation accumulation comparisons between DeepPrecip and a col
 ## Throughput
 DeepPrecip model training throughput was also examined on a variety of different hardware setups (shown below).
 
-<img src="https://github.com/frasertheking/DeepPrecip/blob/main/images/throughput.png" width="250">
+<center><img src="https://github.com/frasertheking/DeepPrecip/blob/main/images/throughput.png" width="450"></center>
 
 ## Support
 
